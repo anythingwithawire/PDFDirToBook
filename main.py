@@ -1,5 +1,9 @@
 import os
 
+PAGEWIDTH = 120                         #total characers to build each line
+MAXDEPTH = 3                            #max depth to build TOC
+INDENT = 2                              #num chars to indent each level
+
 dirs = []
 
 def listdirs(rootdir):
@@ -10,10 +14,8 @@ def listdirs(rootdir):
             listdirs(it)
     return dirs
 
-
 def makeBook():
     stack = []
-    dirs.clear()
     c = os.getcwd()
     c = '/home/gareth/Downloads/'
     listdir = []
@@ -47,17 +49,19 @@ def makeBook():
                 count = stack.pop()
                 stack.append(count+1)
             for level in range(depth - 1):
-                line = line + " "
+                for i in range(INDENT):
+                    line = line + " "
             for level in range(depth):
                 line = line + str(stack[level])
                 if depth - level > 1:
                     line = line + "."
             count = count + 1
-            for fill in range(120 - len(line) - len(entry)):
+            for fill in range(PAGEWIDTH - len(line) - len(entry)):
                 line = line + " "
             line = line + entry
             lastDepth = depth
-            print(line)
+            if (depth <= MAXDEPTH):
+                print(line)
 
     #print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
