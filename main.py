@@ -1,16 +1,22 @@
 import os
 
 PAGEWIDTH = 120                         #total characers to build each line
-MAXDEPTH = 3                            #max depth to build TOC
+MAXDEPTH = 6                            #max depth to build TOC
 INDENT = 2                              #num chars to indent each level
 
 dirs = []
 
-def listdirs(rootdir):
 
-    for it in os.scandir(rootdir):
+# returns a list of directories and filenames of pdf files without ".pdf" extension
+def listdirs(basedir):
+    for it in os.scandir(basedir):
         if it.is_dir():
             dirs.append(it.path)
+            for file in os.listdir(it):
+                if len(file) >= 4 and file[-4:] == ".pdf":
+                    dirs.append(it.path + "/" + str(file[:-4]))
+                    print(it.path + "/" + str(file))
+
             listdirs(it)
     return dirs
 
